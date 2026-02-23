@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-serif: "Playfair Display", serif;
+}
+
+@layer base {
+  body {
+    @apply bg-zinc-950 text-zinc-100 font-sans antialiased;
+  }
+}
+
+@utility glass {
+  @apply bg-zinc-900/40 backdrop-blur-xl border border-white/10;
+}
+
+@utility stat-card {
+  @apply p-4 rounded-2xl glass flex flex-col gap-1 transition-all duration-300;
+}
+
+@utility btn-primary {
+  @apply px-6 py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-2xl transition-all active:scale-95 disabled:opacity-50 disabled:pointer-events-none shadow-lg shadow-emerald-900/20;
+}
+
+@utility btn-secondary {
+  @apply px-6 py-4 bg-zinc-800 hover:bg-zinc-700 text-white font-bold rounded-2xl transition-all active:scale-95 disabled:opacity-50 disabled:pointer-events-none;
+}
+
+@utility text-money {
+  @apply text-emerald-400;
+}
+
+@utility text-stress {
+  @apply bg-linear-to-r from-orange-400 to-red-500 bg-clip-text text-transparent;
+}
+
+@utility text-opportunity {
+  @apply text-blue-400 drop-shadow-[0_0_8px_rgba(96,165,250,0.4)];
+}
