@@ -1,21 +1,38 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { Scenario, AIAnalysis, GameState } from "../types";
+import { PERSONAS, MAX_DAYS } from "../constants";
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
 
 export async function generateScenario(gameState: GameState): Promise<Scenario> {
+  const persona = PERSONAS[gameState.persona];
+  const historySummary = gameState.history.length > 0 
+    ? gameState.history.map(h => `Day ${h.day}: ${h.scenario} -> ${h.choice} (${h.consequence})`).join('\n')
+    : "No history yet.";
+
   const prompt = `
     Generate a realistic poverty simulation scenario for a B40 (Bottom 40% income group) household in Malaysia.
+    
+    Current Persona: ${persona.name}
+    Persona Description: ${persona.description}
+    Persona Passive Ability: ${persona.passiveAbility}
+
     Current Game State:
-    - Day: ${gameState.day}
+    - Day: ${gameState.day} of ${MAX_DAYS}
     - Money: RM${gameState.money}
     - Debt: RM${gameState.debt}
     - Stress Level: ${gameState.stress}/100
     - Opportunity Level: ${gameState.opportunity}/100
 
-    The scenario should be culturally relevant to Malaysia (mentioning Ringgit RM, local food, public transport like LRT/RapidKL, government hospitals, or school expenses).
-    Provide 2-3 choices with realistic financial and emotional consequences.
-    IMPORTANT: Write everything entirely in English. Do not use any Bahasa Malaysia words or phrases.
+    Game History:
+    ${historySummary}
+
+    CRITICAL INSTRUCTIONS:
+    1. The scenario MUST be tailored to the persona's background (e.g., a student faces campus/study issues, a hustler faces business/gig issues, a family person faces household/child issues).
+    2. DO NOT repeat scenarios or themes already present in the Game History.
+    3. The scenario SHOULD feel like a consequence or continuation of previous choices if applicable.
+    4. The scenario should be culturally relevant to Malaysia (mentioning Ringgit RM, local food, public transport like LRT/RapidKL, government hospitals, or school expenses).
+    5. Provide 2-3 choices with realistic financial and emotional consequences.
   `;
 
   const response = await ai.models.generateContent({
@@ -60,7 +77,9 @@ export async function generateScenario(gameState: GameState): Promise<Scenario> 
 
 export async function analyzeGame(gameState: GameState): Promise<AIAnalysis> {
   const prompt = `
-    Analyze the following 30-day poverty simulation results for a B40 household in Malaysia.
+    Analyze the following ${MAX_DAYS}-day poverty simulation results for a B40 household in Malaysia.
+    Persona: ${PERSONAS[gameState.persona].name}
+    
     Final Stats:
     - Money: RM${gameState.money}
     - Debt: RM${gameState.debt}

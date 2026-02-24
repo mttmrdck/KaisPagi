@@ -1,5 +1,6 @@
 import { Persona, Achievement, RankType } from './types';
 
+export const MAX_DAYS = 15;
 export const PERSONAS: Record<string, Persona> = {
   hustler: {
     type: 'hustler',
@@ -58,7 +59,7 @@ export const ACHIEVEMENTS: Achievement[] = [
   {
     id: 'stress_master',
     name: 'Stress Master',
-    description: 'Finish a 30-day run with less than 20 stress.',
+    description: 'Finish a 15-day run with less than 20 stress.',
     icon: '🧠'
   },
   {
@@ -76,7 +77,7 @@ export const ACHIEVEMENTS: Achievement[] = [
   {
     id: 'survivor_30',
     name: 'True Survivor',
-    description: 'Complete your first 30-day run.',
+    description: 'Complete your first 15-day run.',
     icon: '🏆'
   }
 ];
