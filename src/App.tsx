@@ -5,7 +5,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { GameStatus, GameState, Scenario, Choice, AIAnalysis, UserProfile, UserSettings } from './types';
+import { GameStatus, GameState, Scenario, Choice, AIAnalysis, UserProfile, UserSettings, PersonaType, RankType } from './types';
 import { generateScenario, analyzeGame } from './services/gemini';
 import { Welcome } from './components/Welcome';
 import { Auth } from './components/Auth';
@@ -167,7 +167,7 @@ export default function App() {
     if (gameState.persona === 'hustler' && stressImpact > 0) {
       stressImpact *= 1.15; // +15% stress increase
     }
-    if (gameState.persona === 'student' && choice.category === 'education') {
+    if (gameState.persona === 'student' && currentScenario?.category === 'education') {
       moneyImpact *= 0.7; // 30% cheaper
     }
     if (gameState.persona === 'family' && stressImpact > 0) {

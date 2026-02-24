@@ -15,6 +15,7 @@ export async function generateScenario(gameState: GameState): Promise<Scenario> 
 
     The scenario should be culturally relevant to Malaysia (mentioning Ringgit RM, local food, public transport like LRT/RapidKL, government hospitals, or school expenses).
     Provide 2-3 choices with realistic financial and emotional consequences.
+    IMPORTANT: Write everything entirely in English. Do not use any Bahasa Malaysia words or phrases.
   `;
 
   const response = await ai.models.generateContent({
