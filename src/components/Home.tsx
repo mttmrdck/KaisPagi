@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Play, Wallet, AlertCircle, TrendingUp, Shield, Star } from 'lucide-react';
 import { UserProfile, GameState } from '../types';
+import { MAX_DAYS } from '../constants';
 import { Counter } from './Counter';
 
 interface HomeProps {
@@ -74,14 +75,14 @@ export const Home: React.FC<HomeProps> = ({ profile, ongoingRun, onStart, onCont
           {ongoingRun ? (
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Day {ongoingRun.day} of 30</span>
-                <span className="text-[10px] font-black text-emerald-500 uppercase tracking-widest">{Math.round((ongoingRun.day / 30) * 100)}%</span>
+                <span className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Day {ongoingRun.day} of {MAX_DAYS}</span>
+                <span className="text-[10px] font-black text-emerald-500 uppercase tracking-widest">{Math.round((ongoingRun.day / MAX_DAYS) * 100)}%</span>
               </div>
               <div className="w-full h-2 bg-zinc-800 rounded-full overflow-hidden">
                 <motion.div 
-                  initial={{ width: 0 }}
-                  animate={{ width: `${(ongoingRun.day / 30) * 100}%` }}
-                  className="h-full bg-emerald-500"
+                   initial={{ width: 0 }}
+                   animate={{ width: `${(ongoingRun.day / MAX_DAYS) * 100}%` }}
+                   className="h-full bg-emerald-500"
                 />
               </div>
             </div>

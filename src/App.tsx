@@ -23,7 +23,7 @@ import { PersonaSelect } from './components/PersonaSelect';
 import { AlertCircle, TrendingUp, Wallet, User, LayoutDashboard } from 'lucide-react';
 import { Counter } from './components/Counter';
 
-import { PERSONAS, ACHIEVEMENTS, RANKS } from './constants';
+import { PERSONAS, ACHIEVEMENTS, RANKS, MAX_DAYS } from './constants';
 
 const INITIAL_PROFILE: UserProfile = {
   id: "guest",
@@ -210,7 +210,7 @@ export default function App() {
     setOngoingRun(newState);
     setConsequence(choice.consequence);
 
-    if (nextDay > 30 || nextStress >= 100 || nextMoney < -5000) {
+    if (nextDay > MAX_DAYS || nextStress >= 100 || nextMoney < -5000) {
       setStatus(GameStatus.GAMEOVER);
       performAnalysis(newState);
       updateProfile(newState);
@@ -221,7 +221,7 @@ export default function App() {
   const updateProfile = (finalState: GameState) => {
     const cause = finalState.stress >= 100 ? 'Stress Collapse' : 
                   finalState.money < -5000 ? 'Bankruptcy' : 
-                  finalState.day > 30 ? 'Success' : 'Unknown';
+                  finalState.day > MAX_DAYS ? 'Success' : 'Unknown';
 
     // Calculate ELO Gain
     let eloGain = 0;
@@ -587,10 +587,10 @@ export default function App() {
           <div className="flex flex-col items-end flex-1 max-w-[120px] ml-4">
             <div className="flex justify-between w-full mb-1.5 px-0.5">
               <span className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold">Day {gameState.day}</span>
-              <span className="text-[10px] text-zinc-400 font-bold">30</span>
+              <span className="text-[10px] text-zinc-400 font-bold">{MAX_DAYS}</span>
             </div>
             <div className="w-full h-1.5 bg-zinc-800 rounded-full overflow-hidden flex gap-0.5">
-              {Array.from({ length: 30 }).map((_, i) => (
+              {Array.from({ length: MAX_DAYS }).map((_, i) => (
                 <div 
                   key={i} 
                   className={`flex-1 h-full rounded-full transition-all duration-500 ${

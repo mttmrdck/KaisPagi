@@ -9,7 +9,7 @@ interface OnboardingProps {
 const steps = [
   {
     title: "The Objective",
-    description: "Survive 30 days on a limited monthly income of RM 2,500. Every ringgit counts in the B40 reality.",
+    description: "Survive 15 days on a limited monthly income of RM 2,500. Every ringgit counts in the B40 reality.",
     icon: <Flag className="text-emerald-500" size={32} />,
     color: "emerald"
   },
@@ -27,7 +27,7 @@ const steps = [
   },
   {
     title: "End Condition",
-    description: "Reach Day 30 without going bankrupt or collapsing from stress. Can you break the cycle?",
+    description: "Reach Day 15 without going bankrupt or collapsing from stress. Can you break the cycle?",
     icon: <AlertCircle className="text-red-500" size={32} />,
     color: "red"
   }
@@ -49,12 +49,12 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onClose }) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-zinc-950/90 backdrop-blur-md"
+      className="fixed inset-0 z-[100] flex justify-center p-4 sm:p-6 bg-zinc-950/90 backdrop-blur-md overflow-y-auto"
     >
       <motion.div 
         initial={{ scale: 0.9, y: 20 }}
         animate={{ scale: 1, y: 0 }}
-        className="glass w-full max-w-md rounded-[3rem] overflow-hidden shadow-2xl border-white/10"
+        className="glass w-full max-w-md rounded-[2.5rem] sm:rounded-[3rem] overflow-hidden shadow-2xl border-white/10 my-auto relative"
       >
         <div className="p-8 pt-12 text-center relative">
           <button 

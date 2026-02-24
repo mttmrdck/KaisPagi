@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { GameState, AIAnalysis } from '../types';
+import { MAX_DAYS } from '../constants';
 import ReactMarkdown from 'react-markdown';
 import { RefreshCw, Share2, BookOpen, Star, Shield, TrendingUp } from 'lucide-react';
 import { Counter } from './Counter';
@@ -14,7 +15,7 @@ interface GameOverProps {
 
 export const GameOver: React.FC<GameOverProps> = ({ state, analysis, onRestart, onBackToMenu }) => {
   const getRating = () => {
-    if (state.day > 30) {
+    if (state.day > MAX_DAYS) {
       if (state.money > 1000) return { label: 'Financial Master', color: 'text-emerald-400', elo: 800 };
       if (state.money > 0) return { label: 'Survivor', color: 'text-blue-400', elo: 500 };
       return { label: 'Barely Made It', color: 'text-orange-400', elo: 300 };
@@ -33,10 +34,10 @@ export const GameOver: React.FC<GameOverProps> = ({ state, analysis, onRestart, 
         className="text-center py-12"
       >
         <h1 className="text-5xl font-serif font-bold mb-3 tracking-tight">
-          {state.day > 30 ? 'Journey Complete' : 'Journey Ended'}
+          {state.day > MAX_DAYS ? 'Journey Complete' : 'Journey Ended'}
         </h1>
         <p className="text-zinc-500 text-[11px] uppercase tracking-[0.3em] font-black mb-8">
-          Day {state.day} of 30
+          Day {state.day} of {MAX_DAYS}
         </p>
         
         <div className="flex flex-col items-center gap-4">
