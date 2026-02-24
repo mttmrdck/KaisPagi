@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAnalytics, logEvent, Analytics, setAnalyticsCollectionEnabled } from 'firebase/analytics';
+import { getAnalytics, logEvent, Analytics } from 'firebase/analytics';
 
 const firebaseConfig = {
   apiKey: "AIzaSyD2iE2nUoubR9WBXPvmFaCZxz36hMT2zFk",
@@ -11,10 +11,9 @@ const firebaseConfig = {
   measurementId: "G-QNZJL7T9JB"
 };
 
-if (import.meta.env.DEV) {
-  // enables debug mode in development only
-  (window as any).FIREBASE_ANALYTICS_DEBUG_MODE = true;
-}
+// Temporary: always enable debug mode so events show in Firebase DebugView
+// Remove this line once you've confirmed analytics is working
+(window as any).FIREBASE_ANALYTICS_DEBUG_MODE = true;
 
 const app = initializeApp(firebaseConfig);
 
