@@ -1,5 +1,17 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { 
+  Loader2, 
+  Wrench, 
+  Bus, 
+  Users, 
+  ShoppingBag, 
+  HeartPulse, 
+  Briefcase, 
+  Banknote, 
+  Zap, 
+  ArrowRight 
+} from 'lucide-react';
 import { PERSONAS } from '../constants';
 import { PersonaType, Scenario, Choice } from '../types';
 
