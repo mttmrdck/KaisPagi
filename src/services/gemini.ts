@@ -32,11 +32,11 @@ export async function generateScenario(gameState: GameState): Promise<Scenario> 
     2. DO NOT repeat scenarios or themes already present in the Game History.
     3. The scenario SHOULD feel like a consequence or continuation of previous choices if applicable.
     4. The scenario should be culturally relevant to Malaysia (mentioning Ringgit RM, local food, public transport like LRT/RapidKL, government hospitals, or school expenses).
-    5. Provide 2-3 choices with realistic financial and emotional consequences.
+    5. Provide 3 choices with realistic financial and emotional consequences.
   `;
 
   const response = await ai.models.generateContent({
-    model: "gemini-3-flash-preview",
+    model: "gemini-2.0-flash",
     contents: prompt,
     config: {
       responseMimeType: "application/json",
@@ -95,7 +95,7 @@ export async function analyzeGame(gameState: GameState): Promise<AIAnalysis> {
   `;
 
   const response = await ai.models.generateContent({
-    model: "gemini-3-flash-preview",
+    model: "gemini-2.0-flash",
     contents: prompt,
     config: {
       responseMimeType: "application/json",
