@@ -6,9 +6,9 @@ KaisPagi takes its name from a Malay idiom:
 
 It describes a life with no buffer, no savings, no safety net. You work today, you eat today. You don't work, you don't eat. For millions of B40 Malaysians, this isn't a saying — it's a daily reality. 
 
-KaisPagi is an AI-powered poverty simulation game that puts you in the shoes of a B40 (bottom 40% income group) household in Malaysia. Over 15 days, you face the real financial decisions that low-income Malaysians navigate every day — unexpected medical bills, school fees, job instability, rising food prices, and the constant threat of debt. Every choice has consequences. There are no perfect options.
+KaisPagi is an AI-powered poverty simulation game that puts you in the shoes of a B40 household in Malaysia. Over 15 days, you face the real financial decisions that low-income Malaysians navigate every day — unexpected medical bills, school fees, job instability, rising food prices, and the constant threat of debt. Every choice has consequences. There are no perfect options.
 
-Built for KitaHack 2026, KaisPagi addresses UN SDG 1: No Poverty by turning empathy into experience. Rather than reading statistics about poverty, you live it — watching your bank balance erode day by day, feeling the pull of predatory loans when you're desperate, and understanding why smart people make decisions that look irrational from the outside.
+Built for KitaHack 2026, KaisPagi addresses UN SDG 1: No Poverty by turning empathy into experience. Rather than reading statistics about poverty, you live it, watching your bank balance erode day by day, feeling the pull of predatory loans when you're desperate, and understanding why smart people make decisions that look irrational from the outside.
 
 Instead of static, predictable gameplay, *Kais Pagi* utilizes the **Google Gemini API** to dynamically generate unpredictable daily life events forcing players to make difficult financial decisions in real-time. 
 
