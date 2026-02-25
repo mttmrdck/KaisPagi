@@ -8,7 +8,6 @@ import { motion, AnimatePresence } from 'motion/react';
 import { GameStatus, GameState, Scenario, Choice, AIAnalysis, UserProfile, UserSettings, PersonaType, RankType } from './types';
 import { generateScenario, analyzeGame } from './services/gemini';
 import { Welcome } from './components/Welcome';
-import { Auth } from './components/Auth';
 import { Home } from './components/Home';
 import { Intro } from './components/Intro';
 import { Dashboard } from './components/Dashboard';
@@ -75,7 +74,6 @@ export default function App() {
   const [consequence, setConsequence] = useState<string | null>(null);
   const [showFlash, setShowFlash] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
-  const [authMode, setAuthMode] = useState<'login' | 'signup'>('signup');
   
   const [userProfile, setUserProfile] = useState<UserProfile>(() => {
     const saved = localStorage.getItem('kaispagi_profile');
@@ -277,17 +275,6 @@ export default function App() {
     });
   };
 
-  const handleAuthSuccess = (userData: any) => {
-    setUserProfile(prev => ({
-      ...prev,
-      username: userData.username,
-      email: userData.email,
-      id: userData.id || 'user_' + Math.random().toString(36).substr(2, 9)
-    }));
-    localStorage.setItem('kaispagi_auth', 'true');
-    setStatus(GameStatus.DASHBOARD);
-  };
-
   const handleLogout = () => {
     localStorage.removeItem('kaispagi_auth');
     setStatus(GameStatus.WELCOME);
@@ -396,31 +383,16 @@ export default function App() {
               exit={{ opacity: 0 }}
               className="min-h-full flex flex-col"
             >
-              <Welcome onAction={(action) => {
-                if (action === 'guest') {
+              <Welcome onAction={(action, username) => {
+                if (action === 'signup' && username) {
+                  setUserProfile(prev => ({ ...prev, username }));
                   localStorage.setItem('kaispagi_auth', 'true');
                   setStatus(GameStatus.DASHBOARD);
-                } else {
-                  setAuthMode(action);
-                  setStatus(GameStatus.AUTH);
+                } else if (action === 'guest') {
+                  localStorage.setItem('kaispagi_auth', 'true');
+                  setStatus(GameStatus.DASHBOARD);
                 }
               }} />
-            </motion.div>
-          )}
-
-          {status === GameStatus.AUTH && (
-            <motion.div
-              key="auth"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              className="min-h-full flex flex-col"
-            >
-              <Auth 
-                mode={authMode} 
-                onBack={() => setStatus(GameStatus.WELCOME)} 
-                onSuccess={handleAuthSuccess}
-              />
             </motion.div>
           )}
 
