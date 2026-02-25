@@ -2,7 +2,7 @@ import { initializeApp } from 'firebase/app';
 import { getAnalytics, logEvent, Analytics } from 'firebase/analytics';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyD2iE2nUoubR9WBXPvmFaCZxz36hMT2zFk",
+  apiKey: "AIzaSyAKRg0MgFCHs2cjkn80-QmWTkFFonHp7VU",
   authDomain: "mengaislagi-3f425.firebaseapp.com",
   projectId: "mengaislagi-3f425",
   storageBucket: "mengaislagi-3f425.firebasestorage.app",

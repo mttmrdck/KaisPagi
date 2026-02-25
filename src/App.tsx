@@ -24,7 +24,6 @@ import { AlertCircle, TrendingUp, Wallet, User, LayoutDashboard } from 'lucide-r
 import { Counter } from './components/Counter';
 
 import { PERSONAS, ACHIEVEMENTS, RANKS, MAX_DAYS } from './constants';
-import { analytics, logEvent } from './services/firebase';
 
 const INITIAL_PROFILE: UserProfile = {
   id: "guest",
@@ -55,8 +54,9 @@ const INITIAL_STATE: GameState = {
   money: 2500,
   debt: 0,
   stress: 20,
-  opportunity: 50,
   persona: 'hustler',
+  loans: [],
+  isBlacklisted: false,
   history: []
 };
 
@@ -132,7 +132,6 @@ export default function App() {
     setGameState(startingState);
     setOngoingRun(startingState);
     setStatus(GameStatus.PLAYING);
-    if (analytics) logEvent(analytics, 'game_start', { persona: personaType });
     fetchNextScenario(startingState);
   };
 
@@ -147,6 +146,114 @@ export default function App() {
   const fetchNextScenario = async (state: GameState) => {
     setLoading(true);
     try {
+      // Check for Debt Consequences first
+      if (state.debt > 2000) {
+        setCurrentScenario({
+          title: "Debt Collectors at the Door",
+          description: "Your total debt has reached a critical level. Debt collectors have started calling your workplace and showing up at your home.",
+          category: "debt_consequence",
+          choices: [
+            {
+              text: "Beg for more time",
+              impact: { stress: 20, money: -100 },
+              consequence: "They give you a few more days, but the stress is eating you alive."
+            },
+            {
+              text: "Pay a small amount (RM 200)",
+              impact: { money: -200, debt: -200, stress: 10 },
+              consequence: "They leave for now, but your wallet is even thinner."
+            }
+          ]
+        });
+        setLoading(false);
+        return;
+      }
+
+      // Check for Ah Long threats
+      const ahlongLoan = state.loans.find(l => l.type === 'ahlong');
+      if (ahlongLoan && ahlongLoan.daysLeft <= 0 && ahlongLoan.remainingAmount > 0) {
+        setCurrentScenario({
+          title: "Ah Long Threat",
+          description: "You missed the deadline for the Ah Long repayment. They've splashed red paint on your door and sent threatening messages to your family.",
+          category: "debt_consequence",
+          choices: [
+            {
+              text: "Hide and hope they go away",
+              impact: { stress: 40 },
+              consequence: "You live in constant fear. Every knock on the door makes you jump."
+            },
+            {
+              text: "Sell your belongings to pay (RM 500)",
+              impact: { money: -500, debt: -500, stress: 15 },
+              consequence: "You manage to scrape some money together to appease them for now."
+            }
+          ]
+        });
+        setLoading(false);
+        return;
+      }
+
+      // Check for Loan Trigger
+      if (state.money < 500 && !state.isBlacklisted) {
+        setCurrentScenario({
+          title: "Financial Desperation",
+          description: "Your bank account is nearly empty. You need money to survive the coming days. Where will you turn?",
+          category: "loan",
+          choices: [
+            {
+              text: `Bank Loan (Borrow RM 1000, repay RM 1200)`,
+              impact: { money: 1000, debt: 1200, stress: 5 },
+              consequence: "The bank approves your micro-loan. You have some breathing room, but the monthly installments will be tough."
+            },
+            {
+              text: "Ah Long (Borrow RM 1000, repay RM 1500)",
+              impact: { money: 1000, debt: 1500, stress: 25 },
+              consequence: "The money is in your hands instantly. No questions asked. But you know the risks."
+            },
+            {
+              text: "Borrow from Family (Borrow RM 300)",
+              impact: { money: 300, debt: 300, stress: 20 },
+              consequence: "Your sister gives you some cash. She says don't worry about the interest, but the guilt weighs heavy."
+            },
+            {
+              text: "Refuse Loan",
+              impact: { stress: 10 },
+              consequence: "You decide to struggle through. It's going to be a very difficult week."
+            }
+          ]
+        });
+        setLoading(false);
+        return;
+      }
+
+      // If blacklisted, fewer options
+      if (state.money < 500 && state.isBlacklisted) {
+        setCurrentScenario({
+          title: "Blacklisted and Broke",
+          description: "Your credit score is ruined from the missed bank payments. No legitimate bank will touch you now. Your options are narrowing.",
+          category: "loan",
+          choices: [
+            {
+              text: "Ah Long (Borrow RM 1000, repay RM 1500)",
+              impact: { money: 1000, debt: 1500, stress: 25 },
+              consequence: "The loan shark doesn't care about your credit score. But they care about their money."
+            },
+            {
+              text: "Borrow from Family (Borrow RM 300)",
+              impact: { money: 300, debt: 300, stress: 20 },
+              consequence: "You swallow your pride and ask family again. It's getting harder to look them in the eye."
+            },
+            {
+              text: "Refuse Loan",
+              impact: { stress: 15 },
+              consequence: "You're on your own. Good luck."
+            }
+          ]
+        });
+        setLoading(false);
+        return;
+      }
+
       const scenario = await generateScenario(state);
       setCurrentScenario(scenario);
     } catch (error) {
@@ -180,10 +287,69 @@ export default function App() {
     }
 
     const nextDay = gameState.day + 1;
-    const nextMoney = gameState.money + moneyImpact;
-    const nextStress = Math.min(100, Math.max(0, gameState.stress + stressImpact));
-    const nextOpportunity = Math.min(100, Math.max(0, gameState.opportunity + (choice.impact.opportunity || 0)));
-    const nextDebt = gameState.debt + (choice.impact.debt || 0);
+    let nextMoney = gameState.money + moneyImpact;
+    let nextStress = Math.min(100, Math.max(0, gameState.stress + stressImpact));
+    let nextDebt = gameState.debt + (choice.impact.debt || 0);
+    let nextLoans = [...gameState.loans];
+    let nextIsBlacklisted = gameState.isBlacklisted;
+
+    // Handle Loan Creation
+    if (currentScenario?.category === 'loan') {
+      if (choice.text.includes('Bank Loan')) {
+        nextLoans.push({
+          type: 'bank',
+          totalBorrowed: 1000,
+          remainingAmount: 1200,
+          dailyRepayment: 240,
+          daysLeft: 5,
+          dayBorrowed: gameState.day
+        });
+      } else if (choice.text.includes('Ah Long')) {
+        nextLoans.push({
+          type: 'ahlong',
+          totalBorrowed: 1000,
+          remainingAmount: 1500,
+          dailyRepayment: 500,
+          daysLeft: 3,
+          dayBorrowed: gameState.day
+        });
+      } else if (choice.text.includes('Family')) {
+        nextLoans.push({
+          type: 'family',
+          totalBorrowed: 300,
+          remainingAmount: 300,
+          dailyRepayment: 50,
+          daysLeft: 6,
+          dayBorrowed: gameState.day
+        });
+      }
+    }
+
+    // Daily Debt Deduction
+    nextLoans = nextLoans.map(loan => {
+      if (loan.daysLeft > 0 && loan.remainingAmount > 0) {
+        const repayment = Math.min(loan.dailyRepayment, loan.remainingAmount);
+        if (nextMoney >= repayment) {
+          nextMoney -= repayment;
+          nextDebt -= repayment;
+          return {
+            ...loan,
+            remainingAmount: loan.remainingAmount - repayment,
+            daysLeft: loan.daysLeft - 1
+          };
+        } else {
+          // Missed repayment
+          if (loan.type === 'bank') {
+            nextIsBlacklisted = true;
+          }
+          return {
+            ...loan,
+            daysLeft: loan.daysLeft - 1 // Still counts down
+          };
+        }
+      }
+      return loan;
+    });
 
     if (moneyImpact < 0) {
       setShowFlash(true);
@@ -195,8 +361,9 @@ export default function App() {
       day: nextDay,
       money: nextMoney,
       stress: nextStress,
-      opportunity: nextOpportunity,
-      debt: nextDebt,
+      debt: Math.max(0, nextDebt),
+      loans: nextLoans,
+      isBlacklisted: nextIsBlacklisted,
       history: [
         ...gameState.history,
         {
@@ -211,11 +378,8 @@ export default function App() {
     setGameState(newState);
     setOngoingRun(newState);
     setConsequence(choice.consequence);
-    if (analytics) logEvent(analytics, 'choice_made', { day: gameState.day, choice: choice.text });
 
     if (nextDay > MAX_DAYS || nextStress >= 100 || nextMoney < -5000) {
-      const cause = nextStress >= 100 ? 'Stress Collapse' : nextMoney < -5000 ? 'Bankruptcy' : 'Success';
-      if (analytics) logEvent(analytics, 'game_over', { cause, days_survived: nextDay });
       setStatus(GameStatus.GAMEOVER);
       performAnalysis(newState);
       updateProfile(newState);
@@ -262,7 +426,7 @@ export default function App() {
       if (finalState.money >= 10000) checkAndAdd('first_10k');
       if (cause === 'Success' && finalState.stress < 20) checkAndAdd('stress_master');
       if (newFailureCauses['Bankruptcy'] >= 5) checkAndAdd('bankrupt_5');
-      if (finalState.opportunity >= 90) checkAndAdd('investor_king');
+      if (finalState.loans.some(l => l.type === 'ahlong') && cause === 'Success') checkAndAdd('debt_survivor');
       if (cause === 'Success') checkAndAdd('survivor_30');
 
       return {
@@ -324,8 +488,24 @@ export default function App() {
     <div className={`fixed inset-0 transition-colors duration-1000 flex flex-col overflow-hidden font-sans ${isCrisis ? 'bg-zinc-950' : 'bg-zinc-950'}`}>
       {/* Animated Background Gradient */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-emerald-500/20 blur-[120px] rounded-full opacity-10" />
-        <div className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-red-500/10 blur-[120px] rounded-full opacity-10" />
+        <motion.div 
+          animate={{
+            scale: [1, 1.2, 1],
+            rotate: [0, 90, 0],
+            opacity: isCrisis ? [0.05, 0.1, 0.05] : [0.1, 0.15, 0.1]
+          }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          className="absolute -top-1/2 -left-1/2 w-full h-full bg-emerald-500/20 blur-[120px] rounded-full"
+        />
+        <motion.div 
+          animate={{
+            scale: [1.2, 1, 1.2],
+            rotate: [90, 0, 90],
+            opacity: isCrisis ? [0.05, 0.1, 0.05] : [0.1, 0.15, 0.1]
+          }}
+          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+          className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-red-500/10 blur-[120px] rounded-full"
+        />
       </div>
 
       {/* Crisis Vignette */}
@@ -353,7 +533,7 @@ export default function App() {
       </AnimatePresence>
 
       {/* Mobile Status Bar Simulation / Header */}
-      <header className="shrink-0 px-6 py-4 flex justify-between items-center border-b border-white/5 bg-zinc-950/80 backdrop-blur-sm z-50">
+      <header className="shrink-0 px-6 py-4 flex justify-between items-center border-b border-white/5 bg-zinc-950/80 backdrop-blur-md z-50">
         <div className="flex items-center gap-2">
           <div className="w-7 h-7 bg-emerald-600 rounded-lg flex items-center justify-center font-bold text-white text-sm shadow-lg shadow-emerald-900/20">K</div>
           <span className="font-serif font-bold text-lg tracking-tight">KaisPagi</span>
@@ -563,8 +743,8 @@ export default function App() {
       </main>
 
       {/* Mobile-style Bottom Navigation / Info Bar */}
-      {status === GameStatus.PLAYING && !consequence && (
-        <footer className="shrink-0 border-t border-white/5 bg-zinc-950/90 backdrop-blur-sm px-6 py-4 flex justify-between items-center z-50">
+      {status === GameStatus.PLAYING && (
+        <footer className="shrink-0 border-t border-white/5 bg-zinc-950/90 backdrop-blur-xl px-6 py-4 flex justify-between items-center z-50">
           <div className="flex flex-col">
             <span className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-1">Current Balance</span>
             <div className={`flex items-baseline gap-1 font-mono font-bold text-xl ${gameState.money < 100 ? 'text-red-400' : 'text-emerald-400'}`}>

@@ -137,6 +137,11 @@ export const ScenarioCard: React.FC<ScenarioCardProps> = ({ scenario, onChoice, 
                     {choice.impact.stress! > 0 ? '+' : '-'}{Math.abs(choice.impact.stress!)} Stress
                   </span>
                 )}
+                {choice.impact.debt !== 0 && (
+                  <span className="text-red-400">
+                    {choice.impact.debt! > 0 ? '+' : '-'}RM{Math.abs(choice.impact.debt!)} Debt
+                  </span>
+                )}
               </div>
             </div>
 
@@ -152,13 +157,15 @@ export const ScenarioCard: React.FC<ScenarioCardProps> = ({ scenario, onChoice, 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-end justify-center p-6 bg-zinc-950/80 backdrop-blur-sm"
+            className="fixed inset-0 z-[100] flex justify-center p-4 bg-zinc-950/90 backdrop-blur-md overflow-y-auto"
+            onClick={() => setPendingChoice(null)}
           >
             <motion.div 
-              initial={{ y: 100 }}
-              animate={{ y: 0 }}
-              exit={{ y: 100 }}
-              className="glass w-full max-w-md rounded-[3rem] p-8 shadow-2xl border-white/10 mb-4"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="glass w-full max-w-md rounded-[2.5rem] sm:rounded-[3rem] p-6 sm:p-8 shadow-2xl border-white/10 my-auto relative"
+              onClick={(e) => e.stopPropagation()}
             >
               <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-zinc-500 mb-6 text-center">Confirm Decision</h3>
               
@@ -184,6 +191,14 @@ export const ScenarioCard: React.FC<ScenarioCardProps> = ({ scenario, onChoice, 
                       <span className="text-[9px] font-black uppercase tracking-widest text-zinc-500 mb-1">Stress</span>
                       <span className={`text-lg font-mono font-black ${pendingChoice.impact.stress! > 0 ? 'text-orange-400' : 'text-blue-400'}`}>
                         {pendingChoice.impact.stress! > 0 ? '+' : '-'}{Math.abs(pendingChoice.impact.stress!)}
+                      </span>
+                    </div>
+                  )}
+                  {pendingChoice.impact.debt !== 0 && (
+                    <div className="flex flex-col">
+                      <span className="text-[9px] font-black uppercase tracking-widest text-zinc-500 mb-1">Debt</span>
+                      <span className={`text-lg font-mono font-black ${pendingChoice.impact.debt! > 0 ? 'text-red-400' : 'text-emerald-400'}`}>
+                        {pendingChoice.impact.debt! > 0 ? '+' : '-'}RM{Math.abs(pendingChoice.impact.debt!)}
                       </span>
                     </div>
                   )}

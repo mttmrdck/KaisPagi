@@ -1,6 +1,7 @@
 import { Persona, Achievement, RankType } from './types';
 
 export const MAX_DAYS = 15;
+
 export const PERSONAS: Record<string, Persona> = {
   hustler: {
     type: 'hustler',
@@ -69,10 +70,10 @@ export const ACHIEVEMENTS: Achievement[] = [
     icon: '💀'
   },
   {
-    id: 'investor_king',
-    name: 'Investor King',
-    description: 'Reach 90% Opportunity score.',
-    icon: '🏦'
+    id: 'debt_survivor',
+    name: 'Debt Survivor',
+    description: 'Survive a run after borrowing from an Ah Long.',
+    icon: '🦈'
   },
   {
     id: 'survivor_30',
