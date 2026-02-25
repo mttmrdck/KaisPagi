@@ -22,16 +22,32 @@ This project directly aligns with the United Nations Sustainable Development Goa
 2. **Resource Management:** Players must weigh the cost of every action. Choosing the cheaper option (e.g., skipping a meal to save RM10) might save money but drastically increase their Stress meter. 
 3. **Analytics Tracking:** We utilize Firebase Analytics to monitor the most common choices players make, providing real-world data on which financial trade-offs are perceived as the most difficult.
 
-### 🛠️ Tech Stack & Google Technologies
+### Technical Infrastrucutre
 * **Frontend:** React + TypeScript (powered by Vite)
 * **AI Engine:** Google Gemini API (`@google/genai` SDK)
 * **Backend & Hosting:** Firebase (Analytics & Hosting)
 
-### 🚧 Challenges Faced
+### Implementation Details
+1. **AI-Powered Dynamic Life Events**
+Unlike traditional "Choose Your Own Adventure" games, KaisPagi uses Generative AI to ensure no two playthroughs are the same.
+* **Contextual Prompting:** Gemini is fed parameters like Current_Cash, Debt_Level, and Day_Number. It then generates a "Crisis" that is mathematically difficult but narratively grounded in Malaysian reality.
+* **The "Desperation" Logic:** As the bank balance nears zero, the AI is programmed to introduce higher-risk "predatory" options (unlicensed moneylenders), simulating the trap of the poverty cycle
+
+2. **Real-World Economic Mapping**
+The game incorporates localized Malaysian economic factors:
+* **B40 Nuances:** Specific references to GRAB earnings, EPF withdrawals, and local "Kedai Runcit" credit.
+* **Financial Friction:** Small costs that have massive ripples—like a RM50 fine being the difference between a full meal and a skipped one.
+
+### Challenges Faced
 1. Balancing the "Unfairness": It was a challenge to make the game "winnable" but still authentically difficult.
 Solution: We tuned the Gemini prompts to ensure scenarios were grounded in real Malaysian B40 data.
 
-### 🗺️ Future Roadmap
-1. **Voice Interactivity:** Integrating Gemini Live capabilities to allow players to "negotiate" or "plead" with debt collectors or employers, adding a deeper layer of immersion.
-2. **Hyper-Localization:** Expanding scenarios to include specific regional challenges (e.g., East Malaysia vs. Klang Valley costs).
-3. **Policy Integration:** Adding "What If" modes where players can see how specific government interventions (like UBI or transport subsidies) would have changed their survival outcome.
+### Future Roadmap
+1. **Short-term**
+* **Resource Directory:** At the end of a "Game Over," provide links to actual NGOs, Zakat offices, or government aid programs for players who are actually in these situations.
+* **Faster AI:** Switching to Gemini 3 Flash to kill loading times and make the game snappy.
+* **Custom Length:** Choose your challenge—from a 7-day "Quick Stress" to a 30-day "Hardcore Month."
+2. **Long-term vision**
+* **Hyper-Localization:** Specific modules for urban poor (KL) vs. rural poor (East Malaysia), accounting for different cost-of-living indices.
+* **Policy Integration:** Creating a version for policymakers where they can "test" the impact of a new subsidy or price hike on the simulated B40 "agents" to see how quickly they fall into debt.
+* **Multiplayer Mode:** Survive together as a family. Share one bank account and argue over how to spend the last RM50.
