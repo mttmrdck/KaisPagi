@@ -9,13 +9,13 @@ interface OnboardingProps {
 const steps = [
   {
     title: "The Objective",
-    description: "Survive 15 days on a limited monthly income of RM 2,500. Every ringgit counts in the B40 reality.",
+    description: "Survive 15 days on a limited monthly income of the Persona that you choose. Every ringgit counts in the B40 reality.",
     icon: <Flag className="text-emerald-500" size={32} />,
     color: "emerald"
   },
   {
     title: "Core Stats",
-    description: "💰 Money: Your lifeline. 😵 Stress: High levels lead to crisis. 🚀 Opportunity: Unlocks better future outcomes.",
+    description: "Money: Your lifeline. \nStress: High level leads to burned out. \nOpportunity: Unlocks better future outcomes.",
     icon: <Wallet className="text-blue-500" size={32} />,
     color: "blue"
   },

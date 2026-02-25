@@ -1,16 +1,15 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Volume2, VolumeX, Smartphone, Moon, Sun, Trash2, Info, Shield, LogOut } from 'lucide-react';
+import { Volume2, VolumeX, Smartphone, Moon, Sun, Trash2, Info, Shield } from 'lucide-react';
 import { UserSettings } from '../types';
 
 interface SettingsProps {
   settings: UserSettings;
   onUpdate: (settings: UserSettings) => void;
   onDeleteAccount: () => void;
-  onLogout: () => void;
 }
 
-export const Settings: React.FC<SettingsProps> = ({ settings, onUpdate, onDeleteAccount, onLogout }) => {
+export const Settings: React.FC<SettingsProps> = ({ settings, onUpdate, onDeleteAccount }) => {
   const toggle = (key: keyof UserSettings) => {
     onUpdate({ ...settings, [key]: !settings[key] });
   };
@@ -73,14 +72,6 @@ export const Settings: React.FC<SettingsProps> = ({ settings, onUpdate, onDelete
               <span className="text-sm font-bold text-white">Privacy Policy</span>
             </div>
             <Info size={16} className="text-zinc-600" />
-          </button>
-
-          <button 
-            onClick={onLogout}
-            className="w-full glass p-6 rounded-[2rem] flex items-center gap-4 text-zinc-400 hover:bg-white/5 transition-colors border-white/5"
-          >
-            <LogOut size={20} />
-            <span className="text-sm font-bold">Logout</span>
           </button>
 
           <button 

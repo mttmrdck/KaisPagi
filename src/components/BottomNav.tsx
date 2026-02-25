@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Home, Play, BarChart2, User, Settings } from 'lucide-react';
+import { Home, Play, BarChart2, User } from 'lucide-react';
 import { GameStatus } from '../types';
 
 interface BottomNavProps {
@@ -17,7 +17,6 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab, onTabChange, is
     { id: GameStatus.PLAYING, label: 'Play', icon: <Play size={20} /> },
     { id: GameStatus.STATS, label: 'Stats', icon: <BarChart2 size={20} /> },
     { id: GameStatus.PROFILE, label: 'Profile', icon: <User size={20} /> },
-    { id: GameStatus.SETTINGS, label: 'Settings', icon: <Settings size={20} /> },
   ];
 
   return (

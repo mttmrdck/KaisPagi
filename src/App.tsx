@@ -16,7 +16,6 @@ import { ScenarioCard } from './components/ScenarioCard';
 import { GameOver } from './components/GameOver';
 import { Profile } from './components/Profile';
 import { Stats } from './components/Stats';
-import { Settings } from './components/Settings';
 import { Onboarding } from './components/Onboarding';
 import { BottomNav } from './components/BottomNav';
 import { PersonaSelect } from './components/PersonaSelect';
@@ -117,8 +116,7 @@ export default function App() {
     GameStatus.DASHBOARD, 
     GameStatus.PLAYING, 
     GameStatus.STATS, 
-    GameStatus.PROFILE, 
-    GameStatus.SETTINGS
+    GameStatus.PROFILE,
   ].includes(status) && !consequence;
 
   const startGame = (personaType: PersonaType = 'hustler') => {
@@ -358,13 +356,6 @@ export default function App() {
           <div className="w-7 h-7 bg-emerald-600 rounded-lg flex items-center justify-center font-bold text-white text-sm shadow-lg shadow-emerald-900/20">K</div>
           <span className="font-serif font-bold text-lg tracking-tight">KaisPagi</span>
         </div>
-        <div className="flex items-center gap-3">
-          {status === GameStatus.PLAYING && (
-            <div className="px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-bold text-emerald-500 uppercase tracking-widest">
-              Live
-            </div>
-          )}
-        </div>
       </header>
 
       {/* Onboarding Modal */}
@@ -463,9 +454,10 @@ export default function App() {
               exit={{ opacity: 0, x: -50 }}
               className="min-h-full flex flex-col"
             >
-              <Profile 
-                profile={userProfile} 
+              <Profile
+                profile={userProfile}
                 onReset={resetProfile}
+                onLogout={handleLogout}
               />
             </motion.div>
           )}
@@ -484,22 +476,6 @@ export default function App() {
             </motion.div>
           )}
 
-          {status === GameStatus.SETTINGS && (
-            <motion.div
-              key="settings"
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -50 }}
-              className="min-h-full flex flex-col"
-            >
-              <Settings 
-                settings={userSettings}
-                onUpdate={setUserSettings}
-                onLogout={handleLogout}
-                onDeleteAccount={resetProfile}
-              />
-            </motion.div>
-          )}
 
           {status === GameStatus.PLAYING && (
             <motion.div

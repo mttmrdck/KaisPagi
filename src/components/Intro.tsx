@@ -21,7 +21,7 @@ export const Intro: React.FC<IntroProps> = ({ onStart, onShowOnboarding }) => {
           transition={{ delay: 0.2 }}
           className="inline-block px-4 py-1.5 rounded-full bg-emerald-500/10 text-emerald-500 text-[11px] font-black uppercase tracking-[0.3em] mb-8 border border-emerald-500/20 backdrop-blur-sm"
         >
-          Simulation
+          B40 Simulation
         </motion.div>
         
         <h1 className="text-7xl font-serif font-bold mb-8 leading-[0.9] tracking-tighter">
