@@ -26,3 +26,12 @@ This project directly aligns with the United Nations Sustainable Development Goa
 * **Frontend:** React + TypeScript (powered by Vite)
 * **AI Engine:** Google Gemini API (`@google/genai` SDK)
 * **Backend & Hosting:** Firebase (Analytics & Hosting)
+
+### 🚧 Challenges Faced
+1. Balancing the "Unfairness": It was a challenge to make the game "winnable" but still authentically difficult.
+Solution: We tuned the Gemini prompts to ensure scenarios were grounded in real Malaysian B40 data.
+
+### 🗺️ Future Roadmap
+1. **Voice Interactivity:** Integrating Gemini Live capabilities to allow players to "negotiate" or "plead" with debt collectors or employers, adding a deeper layer of immersion.
+2. **Hyper-Localization:** Expanding scenarios to include specific regional challenges (e.g., East Malaysia vs. Klang Valley costs).
+3. **Policy Integration:** Adding "What If" modes where players can see how specific government interventions (like UBI or transport subsidies) would have changed their survival outcome.
