@@ -15,7 +15,7 @@ const steps = [
   },
   {
     title: "Core Stats",
-    description: "💰 Money: Your lifeline. 😵 Stress: High levels lead to crisis. 🚀 Opportunity: Unlocks better future outcomes.",
+    description: "💰 Money: Your lifeline. 😰 Stress: High levels lead to crisis. 💸 Debt: Taking loans increases your debt burden.",
     icon: <Wallet className="text-blue-500" size={32} />,
     color: "blue"
   },

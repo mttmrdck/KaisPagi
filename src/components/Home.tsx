@@ -62,11 +62,11 @@ export const Home: React.FC<HomeProps> = ({ profile, ongoingRun, onStart, onCont
               </div>
             </div>
             <div>
-              <p className="text-[9px] font-black uppercase tracking-widest text-zinc-500 mb-2">Opportunity</p>
+              <p className="text-[9px] font-black uppercase tracking-widest text-zinc-500 mb-2">Total Debt</p>
               <div className="flex items-center gap-2">
-                <TrendingUp size={14} className="text-blue-400" />
+                <TrendingUp size={14} className="text-red-400" />
                 <span className="text-xl font-mono font-black text-white">
-                  <Counter value={ongoingRun ? ongoingRun.opportunity : 50} />%
+                  RM<Counter value={ongoingRun ? ongoingRun.debt : 0} />
                 </span>
               </div>
             </div>
