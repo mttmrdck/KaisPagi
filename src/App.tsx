@@ -527,11 +527,9 @@ export default function App() {
               exit={{ opacity: 0 }}
               className="min-h-full flex flex-col"
             >
-              <Welcome onAction={(action, username) => {
-                if (action === 'signup' && username) {
-                  setUserProfile(prev => ({ ...prev, username }));
-                  localStorage.setItem('kaispagi_auth', 'true');
-                  setStatus(GameStatus.DASHBOARD);
+              <Welcome onAction={(action) => {
+                if (action === 'start') {
+                  setStatus(GameStatus.START);
                 } else if (action === 'guest') {
                   localStorage.setItem('kaispagi_auth', 'true');
                   setStatus(GameStatus.DASHBOARD);
@@ -578,7 +576,14 @@ export default function App() {
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               className="min-h-full flex flex-col"
             >
-              <Intro onStart={() => setStatus(GameStatus.PERSONA_SELECT)} onShowOnboarding={() => setShowOnboarding(true)} />
+              <Intro
+                onStart={(username) => {
+                  setUserProfile(prev => ({ ...prev, username }));
+                  localStorage.setItem('kaispagi_auth', 'true');
+                  setStatus(GameStatus.PERSONA_SELECT);
+                }}
+                onShowOnboarding={() => setShowOnboarding(true)}
+              />
             </motion.div>
           )}
 

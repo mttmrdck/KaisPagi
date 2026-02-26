@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronRight, X, Wallet, AlertCircle, TrendingUp, Flag } from 'lucide-react';
+import { ChevronRight, X, Wallet, AlertCircle, TrendingUp, Flag, ChevronsRightLeft, ChevronLeft } from 'lucide-react';
 
 interface OnboardingProps {
   onClose: () => void;
@@ -39,6 +39,13 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onClose }) => {
   const nextStep = () => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
+    } else {
+      onClose();
+    }
+  };
+  const prevStep = () => {
+    if (currentStep < steps.length - 1) {
+      setCurrentStep(currentStep - 1);
     } else {
       onClose();
     }
@@ -88,10 +95,10 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onClose }) => {
 
           <div className="flex justify-between items-center gap-4">
             <button 
-              onClick={onClose}
-              className="text-zinc-500 font-bold uppercase tracking-widest text-[10px] hover:text-white transition-colors"
+              onClick={prevStep}
+              className="w-12 h-12 rounded-2xl bg-emerald-600 flex items-center justify-center text-white shadow-lg shadow-emerald-900/20 hover:bg-emerald-500 transition-colors"
             >
-              Skip
+              <ChevronLeft size={24} />
             </button>
             
             <div className="flex gap-1.5">
