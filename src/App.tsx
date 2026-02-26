@@ -20,7 +20,7 @@ import { BottomNav } from './components/BottomNav';
 import { PersonaSelect } from './components/PersonaSelect';
 import { AlertCircle, TrendingUp, Wallet, User, LayoutDashboard } from 'lucide-react';
 import { Counter } from './components/Counter';
-
+import { analytics, logEvent } from './services/firebase';
 import { PERSONAS, ACHIEVEMENTS, RANKS, MAX_DAYS } from './constants';
 
 const INITIAL_PROFILE: UserProfile = {
@@ -128,6 +128,7 @@ export default function App() {
     setGameState(startingState);
     setOngoingRun(startingState);
     setStatus(GameStatus.PLAYING);
+     if (analytics) logEvent(analytics, 'game_started', { persona: personaType });
     fetchNextScenario(startingState);
   };
 
@@ -374,8 +375,11 @@ export default function App() {
     setGameState(newState);
     setOngoingRun(newState);
     setConsequence(choice.consequence);
+    if (analytics) logEvent(analytics, 'choice_made', { day: gameState.day, choice: choice.text }); // ADD THIS
 
     if (nextDay > MAX_DAYS || nextStress >= 100 || nextMoney < -5000) {
+      const cause = nextStress >= 100 ? 'Stress Collapse' : nextMoney < -5000 ? 'Bankruptcy' : 'Success';
+      if (analytics) logEvent(analytics, 'game_over', { cause, days_survived: nextDay, final_money: nextMoney }); // ADD THIS
       setStatus(GameStatus.GAMEOVER);
       performAnalysis(newState);
       updateProfile(newState);

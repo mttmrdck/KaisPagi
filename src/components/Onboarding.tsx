@@ -44,7 +44,7 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onClose }) => {
     }
   };
   const prevStep = () => {
-    if (currentStep <= steps.length - 1) {
+    if (currentStep <= steps.length - 1 && currentStep > 0) {
       setCurrentStep(currentStep - 1);
     } else {
       onClose();
