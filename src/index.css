@@ -37,6 +37,6 @@
   @apply bg-linear-to-r from-orange-400 to-red-500 bg-clip-text text-transparent;
 }
 
-@utility text-opportunity {
-  @apply text-blue-400 drop-shadow-[0_0_8px_rgba(96,165,250,0.4)];
+@utility text-debt {
+  @apply text-red-400 drop-shadow-[0_0_8px_rgba(248,113,113,0.4)];
 }

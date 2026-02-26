@@ -92,10 +92,9 @@ export const GameOver: React.FC<GameOverProps> = ({ state, analysis, onRestart, 
             </div>
           </div>
           <div className="flex flex-col">
-            <span className="text-[11px] text-zinc-500 uppercase tracking-wider font-black mb-2">Opportunity</span>
+            <span className="text-[11px] text-zinc-500 uppercase tracking-wider font-black mb-2">Active Loans</span>
             <div className="text-3xl font-mono font-black text-blue-400 flex items-baseline gap-1">
-              <Counter value={state.opportunity} />
-              <span className="text-sm opacity-60">%</span>
+              <Counter value={state.loans.filter(l => l.remainingAmount > 0).length} />
             </div>
           </div>
         </div>

@@ -22,17 +22,19 @@ export async function generateScenario(gameState: GameState): Promise<Scenario> 
     - Money: RM${gameState.money}
     - Debt: RM${gameState.debt}
     - Stress Level: ${gameState.stress}/100
-    - Opportunity Level: ${gameState.opportunity}/100
+    - Active Loans: ${gameState.loans.length > 0 ? gameState.loans.map(l => `${l.type} (RM${l.remainingAmount} left)`).join(', ') : 'None'}
 
     Game History:
     ${historySummary}
 
     CRITICAL INSTRUCTIONS:
-    1. The scenario MUST be tailored to the persona's background (e.g., a student faces campus/study issues, a hustler faces business/gig issues, a family person faces household/child issues).
+    1. The scenario MUST be tailored to the persona's background.
     2. DO NOT repeat scenarios or themes already present in the Game History.
     3. The scenario SHOULD feel like a consequence or continuation of previous choices if applicable.
-    4. The scenario should be culturally relevant to Malaysia (mentioning Ringgit RM, local food, public transport like LRT/RapidKL, government hospitals, or school expenses etc.).
-    5. Provide 3 choices with realistic financial and emotional consequences.
+    4. The scenario should be culturally relevant to Malaysia.
+    5. Provide 2-3 choices with realistic financial and emotional consequences.
+    6. If category is 'loan', offer specific borrowing options as instructed by the system rules.
+    7. If category is 'debt_consequence', generate a scenario related to debt collectors, threats, or being blacklisted.
   `;
 
   const response = await ai.models.generateContent({
@@ -45,7 +47,7 @@ export async function generateScenario(gameState: GameState): Promise<Scenario> 
         properties: {
           title: { type: Type.STRING },
           description: { type: Type.STRING },
-          category: { type: Type.STRING, enum: ['health', 'education', 'work', 'family', 'unexpected'] },
+          category: { type: Type.STRING, enum: ['health', 'education', 'work', 'family', 'unexpected', 'loan', 'debt_consequence'] },
           choices: {
             type: Type.ARRAY,
             items: {
@@ -58,7 +60,6 @@ export async function generateScenario(gameState: GameState): Promise<Scenario> 
                   properties: {
                     money: { type: Type.NUMBER },
                     stress: { type: Type.NUMBER },
-                    opportunity: { type: Type.NUMBER },
                     debt: { type: Type.NUMBER },
                   }
                 }
@@ -84,7 +85,7 @@ export async function analyzeGame(gameState: GameState): Promise<AIAnalysis> {
     - Money: RM${gameState.money}
     - Debt: RM${gameState.debt}
     - Stress: ${gameState.stress}/100
-    - Opportunity: ${gameState.opportunity}/100
+    - Active Loans: ${gameState.loans.length}
     
     History of choices:
     ${gameState.history.map(h => `Day ${h.day}: ${h.scenario} -> Chose: ${h.choice} -> Result: ${h.consequence}`).join('\n')}

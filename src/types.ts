@@ -64,7 +64,6 @@ export interface Choice {
   impact: {
     money?: number;
     stress?: number;
-    opportunity?: number;
     debt?: number;
   };
   consequence: string;
@@ -74,7 +73,16 @@ export interface Scenario {
   title: string;
   description: string;
   choices: Choice[];
-  category: 'health' | 'education' | 'work' | 'family' | 'unexpected';
+  category: 'health' | 'education' | 'work' | 'family' | 'unexpected' | 'loan' | 'debt_consequence';
+}
+
+export interface Loan {
+  type: 'bank' | 'ahlong' | 'family';
+  remainingAmount: number;
+  dailyRepayment: number;
+  daysLeft: number;
+  totalBorrowed: number;
+  dayBorrowed: number;
 }
 
 export interface GameState {
@@ -82,8 +90,9 @@ export interface GameState {
   money: number;
   debt: number;
   stress: number; // 0 to 100
-  opportunity: number; // 0 to 100
   persona: PersonaType;
+  loans: Loan[];
+  isBlacklisted: boolean;
   history: {
     day: number;
     scenario: string;
