@@ -38,7 +38,7 @@ export async function generateScenario(gameState: GameState): Promise<Scenario> 
   `;
 
   const response = await ai.models.generateContent({
-    model: "gemini-3-flash-preview",
+    model: "gemini-2.0-flash",
     contents: prompt,
     config: {
       responseMimeType: "application/json",
@@ -96,7 +96,7 @@ export async function analyzeGame(gameState: GameState): Promise<AIAnalysis> {
   `;
 
   const response = await ai.models.generateContent({
-    model: "gemini-3-flash-preview",
+    model: "gemini-2.0-flash",
     contents: prompt,
     config: {
       responseMimeType: "application/json",
