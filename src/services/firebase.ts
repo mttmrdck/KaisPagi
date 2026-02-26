@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAnalytics, logEvent, Analytics } from 'firebase/analytics';
+import { getAnalytics, logEvent, Analytics, isSupported } from 'firebase/analytics';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAKRg0MgFCHs2cjkn80-QmWTkFFonHp7VU",
@@ -11,17 +11,28 @@ const firebaseConfig = {
   measurementId: "G-QNZJL7T9JB"
 };
 
-// Temporary: always enable debug mode so events show in Firebase DebugView
-// Remove this line once you've confirmed analytics is working
+// Must be set BEFORE getAnalytics()
 (window as any).FIREBASE_ANALYTICS_DEBUG_MODE = true;
 
+console.log('🔥 Firebase: initializing app...');
 const app = initializeApp(firebaseConfig);
+console.log('🔥 Firebase: app initialized');
 
 let analytics: Analytics | null = null;
-try {
-  analytics = getAnalytics(app);
-} catch (e) {
-  console.warn('Firebase Analytics not available:', e);
-}
+
+console.log('🔥 Firebase: checking isSupported...');
+isSupported()
+  .then((supported) => {
+    console.log('🔥 Firebase: isSupported =', supported);
+    if (supported) {
+      analytics = getAnalytics(app);
+      console.log('✅ Analytics ready — check DebugView in Firebase Console');
+    } else {
+      console.warn('⚠️ Analytics not supported — reason: browser blocked or no measurementId');
+    }
+  })
+  .catch((e) => {
+    console.error('❌ Analytics isSupported() threw an error:', e);
+  });
 
 export { analytics, logEvent };
