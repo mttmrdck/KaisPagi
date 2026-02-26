@@ -15,7 +15,7 @@ const steps = [
   },
   {
     title: "Core Stats",
-    description: "Money: Your lifeline. \nStress: High level leads to burned out. \nOpportunity: Unlocks better future outcomes.",
+    description: "Money: Your lifeline.  \nStress: High level leads to burned out.  \nDebt: Taking loans increases your debt burden.",
     icon: <Wallet className="text-blue-500" size={32} />,
     color: "blue"
   },
@@ -49,7 +49,7 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onClose }) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[100] flex justify-center p-4 sm:p-6 bg-zinc-950/90 backdrop-blur-md overflow-y-auto"
+      className="fixed inset-0 z-[100] flex justify-center p-4 sm:p-6 bg-zinc-950/95 overflow-y-auto"
     >
       <motion.div 
         initial={{ scale: 0.9, y: 20 }}

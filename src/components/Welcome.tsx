@@ -27,7 +27,7 @@ export const Welcome: React.FC<WelcomeProps> = ({ onAction }) => {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2 }}
-          className="inline-block px-4 py-1.5 rounded-full bg-emerald-500/10 text-emerald-500 text-[10px] font-black uppercase tracking-[0.4em] mb-12 border border-emerald-500/20 backdrop-blur-sm"
+          className="inline-block px-4 py-1.5 rounded-full bg-emerald-500/10 text-emerald-500 text-[10px] font-black uppercase tracking-[0.4em] mb-12 border border-emerald-500/20"
         >
           Welcome to the Tightrope
         </motion.div>
