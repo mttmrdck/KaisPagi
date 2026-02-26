@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Home, Play, BarChart2, User, Settings } from 'lucide-react';
+import { Home, Play, BarChart2, User } from 'lucide-react';
 import { GameStatus } from '../types';
 
 interface BottomNavProps {
@@ -17,7 +17,6 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab, onTabChange, is
     { id: GameStatus.PLAYING, label: 'Play', icon: <Play size={20} /> },
     { id: GameStatus.STATS, label: 'Stats', icon: <BarChart2 size={20} /> },
     { id: GameStatus.PROFILE, label: 'Profile', icon: <User size={20} /> },
-    { id: GameStatus.SETTINGS, label: 'Settings', icon: <Settings size={20} /> },
   ];
 
   return (
@@ -25,7 +24,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab, onTabChange, is
       initial={{ y: 100 }}
       animate={{ y: 0 }}
       exit={{ y: 100 }}
-      className="fixed bottom-0 left-0 right-0 z-[100] bg-zinc-950/90 backdrop-blur-xl border-t border-white/5 px-4 pb-8 pt-3 rounded-t-[2.5rem] shadow-[0_-10px_40px_rgba(0,0,0,0.5)]"
+      className="fixed bottom-0 left-0 right-0 z-[100] bg-zinc-950 border-t border-white/5 px-4 pb-8 pt-3 rounded-t-[2.5rem]"
     >
       <div className="max-w-md mx-auto flex justify-between items-center">
         {tabs.map((tab) => {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronRight, X, Wallet, AlertCircle, TrendingUp, Flag } from 'lucide-react';
+import { ChevronRight, X, Wallet, AlertCircle, TrendingUp, Flag, ChevronsRightLeft, ChevronLeft } from 'lucide-react';
 
 interface OnboardingProps {
   onClose: () => void;
@@ -9,13 +9,13 @@ interface OnboardingProps {
 const steps = [
   {
     title: "The Objective",
-    description: "Survive 15 days on a limited monthly income of RM 2,500. Every ringgit counts in the B40 reality.",
+    description: "Survive 15 days on a limited monthly income of the Persona that you choose. Every ringgit counts in the B40 reality.",
     icon: <Flag className="text-emerald-500" size={32} />,
     color: "emerald"
   },
   {
     title: "Core Stats",
-    description: "💰 Money: Your lifeline. 😰 Stress: High levels lead to crisis. 💸 Debt: Taking loans increases your debt burden.",
+    description: "Money: Your lifeline.  \nStress: High level leads to burned out.  \nDebt: Taking loans increases your debt burden.",
     icon: <Wallet className="text-blue-500" size={32} />,
     color: "blue"
   },
@@ -43,13 +43,20 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onClose }) => {
       onClose();
     }
   };
+  const prevStep = () => {
+    if (currentStep < steps.length - 1) {
+      setCurrentStep(currentStep - 1);
+    } else {
+      onClose();
+    }
+  };
 
   return (
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[100] flex justify-center p-4 sm:p-6 bg-zinc-950/90 backdrop-blur-md overflow-y-auto"
+      className="fixed inset-0 z-[100] flex justify-center p-4 sm:p-6 bg-zinc-950/95 overflow-y-auto"
     >
       <motion.div 
         initial={{ scale: 0.9, y: 20 }}
@@ -88,10 +95,10 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onClose }) => {
 
           <div className="flex justify-between items-center gap-4">
             <button 
-              onClick={onClose}
-              className="text-zinc-500 font-bold uppercase tracking-widest text-[10px] hover:text-white transition-colors"
+              onClick={prevStep}
+              className="w-12 h-12 rounded-2xl bg-emerald-600 flex items-center justify-center text-white shadow-lg shadow-emerald-900/20 hover:bg-emerald-500 transition-colors"
             >
-              Skip
+              <ChevronLeft size={24} />
             </button>
             
             <div className="flex gap-1.5">

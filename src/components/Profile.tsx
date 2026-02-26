@@ -1,15 +1,16 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { UserProfile } from '../types';
-import { User, Trophy, Wallet, AlertCircle, TrendingUp, Trash2, Shield, Star } from 'lucide-react';
+import { User, Trophy, Wallet, AlertCircle, TrendingUp, Trash2, Shield, Star, LogOut } from 'lucide-react';
 import { Counter } from './Counter';
 
 interface ProfileProps {
   profile: UserProfile;
   onReset: () => void;
+  onLogout: () => void;
 }
 
-export const Profile: React.FC<ProfileProps> = ({ profile, onReset }) => {
+export const Profile: React.FC<ProfileProps> = ({ profile, onReset, onLogout }) => {
   const confirmReset = () => {
     if (window.confirm("Are you sure you want to reset all your progress? This cannot be undone.")) {
       onReset();
@@ -101,7 +102,14 @@ export const Profile: React.FC<ProfileProps> = ({ profile, onReset }) => {
       </div>
 
       <div className="flex flex-col gap-4 mt-4">
-        <button 
+        <button
+          onClick={onLogout}
+          className="flex items-center justify-center gap-3 py-4 text-zinc-400 font-bold uppercase tracking-widest text-[10px] hover:bg-white/5 rounded-2xl transition-colors"
+        >
+          <LogOut size={14} />
+          Logout
+        </button>
+        <button
           onClick={confirmReset}
           className="flex items-center justify-center gap-3 py-4 text-red-500 font-bold uppercase tracking-widest text-[10px] hover:bg-red-500/10 rounded-2xl transition-colors"
         >

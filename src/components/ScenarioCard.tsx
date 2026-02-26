@@ -43,7 +43,7 @@ export const ScenarioCard: React.FC<ScenarioCardProps> = ({ scenario, onChoice, 
       <div className="flex flex-col items-center justify-center min-h-[400px] w-full max-w-md mx-auto">
         <div className="relative">
           <Loader2 className="animate-spin text-emerald-500" size={64} />
-          <div className="absolute inset-0 blur-2xl bg-emerald-500/30 animate-pulse rounded-full" />
+          <div className="absolute inset-0 bg-emerald-500/20 rounded-full" />
         </div>
         <p className="text-zinc-500 font-bold uppercase tracking-[0.2em] mt-8 text-[10px]">Consulting the AI...</p>
       </div>
@@ -80,7 +80,7 @@ export const ScenarioCard: React.FC<ScenarioCardProps> = ({ scenario, onChoice, 
         
         <div className="p-8 pt-10 relative z-10">
           <div className="flex items-center justify-between mb-6">
-            <span className="px-3 py-1 rounded-full bg-zinc-800/80 text-zinc-400 text-[10px] uppercase tracking-[0.2em] font-black border border-white/5 backdrop-blur-sm">
+            <span className="px-3 py-1 rounded-full bg-zinc-800 text-zinc-400 text-[10px] uppercase tracking-[0.2em] font-black border border-white/5">
               {scenario.category}
             </span>
             <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20">
@@ -157,7 +157,7 @@ export const ScenarioCard: React.FC<ScenarioCardProps> = ({ scenario, onChoice, 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex justify-center p-4 bg-zinc-950/90 backdrop-blur-md overflow-y-auto"
+            className="fixed inset-0 z-[100] flex justify-center p-4 bg-zinc-950/95 overflow-y-auto"
             onClick={() => setPendingChoice(null)}
           >
             <motion.div 

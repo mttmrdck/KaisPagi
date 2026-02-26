@@ -9,27 +9,11 @@ interface DashboardProps {
 
 export const Dashboard: React.FC<DashboardProps> = ({ state }) => {
   const getStressColor = () => {
-    if (state.stress > 80) return 'bg-red-500 shadow-[0_0_15px_rgba(239,68,68,0.5)]';
+    if (state.stress > 80) return 'bg-red-500';
     if (state.stress > 50) return 'bg-orange-500';
     return 'bg-emerald-500';
   };
 
-  const getStressAnimation = () => {
-    if (state.stress > 90) return {
-      scale: [1, 1.05, 1],
-      x: [0, -1, 1, -1, 1, 0],
-      transition: { duration: 0.2, repeat: Infinity }
-    };
-    if (state.stress > 70) return {
-      scale: [1, 1.03, 1],
-      transition: { duration: 0.5, repeat: Infinity }
-    };
-    if (state.stress > 40) return {
-      scale: [1, 1.01, 1],
-      transition: { duration: 1.5, repeat: Infinity }
-    };
-    return {};
-  };
 
   return (
     <div className="flex flex-col gap-4 w-full max-w-md mx-auto mb-8 shrink-0">
@@ -75,17 +59,14 @@ export const Dashboard: React.FC<DashboardProps> = ({ state }) => {
           className="stat-card py-3 px-4"
         >
           <div className="flex items-center gap-2 text-zinc-500 text-[9px] uppercase tracking-[0.15em] font-black">
-            <AlertCircle size={12} className={state.stress > 70 ? 'text-red-500 animate-pulse' : ''} />
+            <AlertCircle size={12} className={state.stress > 70 ? 'text-red-500' : ''} />
             <span className={state.stress > 70 ? 'text-red-500' : ''}>Stress</span>
           </div>
           <div className="flex items-center gap-3 mt-2">
             <div className="flex-1 bg-zinc-800/50 h-1.5 rounded-full overflow-hidden border border-white/5">
               <motion.div 
                 initial={{ width: 0 }}
-                animate={{ 
-                  width: `${state.stress}%`,
-                  ...getStressAnimation()
-                }}
+                animate={{ width: `${state.stress}%` }}
                 className={`h-full transition-colors duration-700 ${getStressColor()}`}
               />
             </div>
@@ -110,7 +91,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ state }) => {
               <motion.div 
                 initial={{ width: 0 }}
                 animate={{ width: `${Math.min(100, (state.debt / 2000) * 100)}%` }}
-                className={`h-full ${state.debt > 1500 ? 'bg-red-500' : 'bg-orange-500'} shadow-[0_0_10px_rgba(249,115,22,0.3)]`}
+                className={`h-full ${state.debt > 1500 ? 'bg-red-500' : 'bg-orange-500'}`}
               />
             </div>
             <span className={`text-[10px] font-mono font-black ${state.debt > 1500 ? 'text-red-400' : 'text-orange-400'}`}>

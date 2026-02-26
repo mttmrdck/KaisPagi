@@ -15,7 +15,6 @@ import { ScenarioCard } from './components/ScenarioCard';
 import { GameOver } from './components/GameOver';
 import { Profile } from './components/Profile';
 import { Stats } from './components/Stats';
-import { Settings } from './components/Settings';
 import { Onboarding } from './components/Onboarding';
 import { BottomNav } from './components/BottomNav';
 import { PersonaSelect } from './components/PersonaSelect';
@@ -115,8 +114,7 @@ export default function App() {
     GameStatus.DASHBOARD, 
     GameStatus.PLAYING, 
     GameStatus.STATS, 
-    GameStatus.PROFILE, 
-    GameStatus.SETTINGS
+    GameStatus.PROFILE,
   ].includes(status) && !consequence;
 
   const startGame = (personaType: PersonaType = 'hustler') => {
@@ -475,24 +473,8 @@ export default function App() {
     <div className={`fixed inset-0 transition-colors duration-1000 flex flex-col overflow-hidden font-sans ${isCrisis ? 'bg-zinc-950' : 'bg-zinc-950'}`}>
       {/* Animated Background Gradient */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <motion.div 
-          animate={{
-            scale: [1, 1.2, 1],
-            rotate: [0, 90, 0],
-            opacity: isCrisis ? [0.05, 0.1, 0.05] : [0.1, 0.15, 0.1]
-          }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute -top-1/2 -left-1/2 w-full h-full bg-emerald-500/20 blur-[120px] rounded-full"
-        />
-        <motion.div 
-          animate={{
-            scale: [1.2, 1, 1.2],
-            rotate: [90, 0, 90],
-            opacity: isCrisis ? [0.05, 0.1, 0.05] : [0.1, 0.15, 0.1]
-          }}
-          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-red-500/10 blur-[120px] rounded-full"
-        />
+        <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-emerald-500/10 blur-[120px] rounded-full" />
+        <div className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-red-500/5 blur-[120px] rounded-full" />
       </div>
 
       {/* Crisis Vignette */}
@@ -520,17 +502,10 @@ export default function App() {
       </AnimatePresence>
 
       {/* Mobile Status Bar Simulation / Header */}
-      <header className="shrink-0 px-6 py-4 flex justify-between items-center border-b border-white/5 bg-zinc-950/80 backdrop-blur-md z-50">
+      <header className="shrink-0 px-6 py-4 flex justify-between items-center border-b border-white/5 bg-zinc-950/90 z-50">
         <div className="flex items-center gap-2">
           <div className="w-7 h-7 bg-emerald-600 rounded-lg flex items-center justify-center font-bold text-white text-sm shadow-lg shadow-emerald-900/20">K</div>
           <span className="font-serif font-bold text-lg tracking-tight">KaisPagi</span>
-        </div>
-        <div className="flex items-center gap-3">
-          {status === GameStatus.PLAYING && (
-            <div className="px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-bold text-emerald-500 uppercase tracking-widest">
-              Live
-            </div>
-          )}
         </div>
       </header>
 
@@ -552,11 +527,9 @@ export default function App() {
               exit={{ opacity: 0 }}
               className="min-h-full flex flex-col"
             >
-              <Welcome onAction={(action, username) => {
-                if (action === 'signup' && username) {
-                  setUserProfile(prev => ({ ...prev, username }));
-                  localStorage.setItem('kaispagi_auth', 'true');
-                  setStatus(GameStatus.DASHBOARD);
+              <Welcome onAction={(action) => {
+                if (action === 'start') {
+                  setStatus(GameStatus.START);
                 } else if (action === 'guest') {
                   localStorage.setItem('kaispagi_auth', 'true');
                   setStatus(GameStatus.DASHBOARD);
@@ -603,7 +576,14 @@ export default function App() {
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               className="min-h-full flex flex-col"
             >
-              <Intro onStart={() => setStatus(GameStatus.PERSONA_SELECT)} onShowOnboarding={() => setShowOnboarding(true)} />
+              <Intro
+                onStart={(username) => {
+                  setUserProfile(prev => ({ ...prev, username }));
+                  localStorage.setItem('kaispagi_auth', 'true');
+                  setStatus(GameStatus.PERSONA_SELECT);
+                }}
+                onShowOnboarding={() => setShowOnboarding(true)}
+              />
             </motion.div>
           )}
 
@@ -615,9 +595,10 @@ export default function App() {
               exit={{ opacity: 0, x: -50 }}
               className="min-h-full flex flex-col"
             >
-              <Profile 
-                profile={userProfile} 
+              <Profile
+                profile={userProfile}
                 onReset={resetProfile}
+                onLogout={handleLogout}
               />
             </motion.div>
           )}
@@ -636,22 +617,6 @@ export default function App() {
             </motion.div>
           )}
 
-          {status === GameStatus.SETTINGS && (
-            <motion.div
-              key="settings"
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -50 }}
-              className="min-h-full flex flex-col"
-            >
-              <Settings 
-                settings={userSettings}
-                onUpdate={setUserSettings}
-                onLogout={handleLogout}
-                onDeleteAccount={resetProfile}
-              />
-            </motion.div>
-          )}
 
           {status === GameStatus.PLAYING && (
             <motion.div
@@ -716,7 +681,7 @@ export default function App() {
 
       {/* Mobile-style Bottom Navigation / Info Bar */}
       {status === GameStatus.PLAYING && (
-        <footer className="shrink-0 border-t border-white/5 bg-zinc-950/90 backdrop-blur-xl px-6 py-4 flex justify-between items-center z-50">
+        <footer className="shrink-0 border-t border-white/5 bg-zinc-950 px-6 py-4 flex justify-between items-center z-50">
           <div className="flex flex-col">
             <span className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-1">Current Balance</span>
             <div className={`flex items-baseline gap-1 font-mono font-bold text-xl ${gameState.money < 100 ? 'text-red-400' : 'text-emerald-400'}`}>
