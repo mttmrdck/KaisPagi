@@ -48,9 +48,9 @@ Solution: We tuned the Gemini prompts to ensure scenarios were grounded in real 
 ### Future Roadmap
 1. **Short-term**
   * **Resource Directory:** At the end of a "Game Over," provide links to actual NGOs, Zakat offices, or government aid programs for players who are actually in these situations.
-  * **Faster AI:** Switching to Gemini 3 Flash to kill loading times and make the game snappy.
-  * **Custom Length:** Choose your challenge—from a 7-day "Quick Stress" to a 30-day "Hardcore Month."
+  * **Faster AI:** Switching to a faster and more powerful AI model  to kill loading times and make the game snappy.
+  * **Custom Length:** Choose your challenge mode from either 7-day "Quick Stress", 15-day "Normal Reality" or a 30-day "Hardcore Month."
 2. **Long-term vision**
-  * **Hyper-Localization:** Specific modules for urban poor (KL) vs. rural poor (East Malaysia), accounting for different cost-of-living indices.
+  * **Hyper-Localization:** Specific modules for urban poor (KL) vs. rural poor (East Malaysia), accounting for different cost of living indices.
   * **Policy Integration:** Creating a version for policymakers where they can "test" the impact of a new subsidy or price hike on the simulated B40 "agents" to see how quickly they fall into debt.
   * **Multiplayer Mode:** Survive together as a family. Share one bank account and argue over how to spend the last RM50.
