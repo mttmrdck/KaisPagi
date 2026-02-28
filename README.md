@@ -62,3 +62,33 @@ Solution: Resolved conflicts file by file in VSCode, keeping the loan system cod
   * **Hyper-Localization:** Specific modules for urban poor (KL) vs. rural poor (East Malaysia), accounting for different cost of living indices.
   * **Policy Integration:** Creating a version for policymakers where they can "test" the impact of a new subsidy or price hike on the simulated B40 "agents" to see how quickly they fall into debt.
   * **Multiplayer Mode:** Survive together as a family. Share one bank account and argue over how to spend the last RM50.
+
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js v18 or higher
+- A Google Gemini API key from [aistudio.google.com](https://aistudio.google.com)
+- A Firebase project with Analytics and Hosting enabled
+
+### Installation
+
+1. Clone the repository
+git clone https://github.com/mttmrdck/KaisPagi.git
+cd KaisPagi
+
+2. Install dependencies
+npm install
+
+3. Install Firebase tools globally
+npm install -g firebase-tools
+
+4. Login to Firebase
+firebase login
+
+5. Create a `.env` file in the root folder
+GEMINI_API_KEY=your_gemini_api_key_here
+
+6. Run the development server
+npm run dev
+
