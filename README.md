@@ -45,6 +45,14 @@ The game incorporates localized Malaysian economic factors:
 
 Solution: We tuned the Gemini prompts to ensure scenarios were grounded in real Malaysian B40 data.
 
+2. **Firebase Analytics Not Showing:**  Events weren't appearing in Firebase DebugView during testing.
+   
+Solution: Found missing import lines in the analytics setup and enabled debug mode before Analytics initializes.
+
+3. **Merge Conflicts in GitHub:**  Multiple team members editing the same files caused conflicts when merging branches.
+   
+Solution: Resolved conflicts file by file in VSCode, keeping the loan system code while accepting the frontend team's UI changes.
+
 ### Future Roadmap
 1. **Short-term**
   * **Resource Directory:** At the end of a "Game Over," provide links to actual NGOs, Zakat offices, or government aid programs for players who are actually in these situations.
