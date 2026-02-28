@@ -49,9 +49,9 @@ Solution: We tuned the Gemini prompts to ensure scenarios were grounded in real 
    
 Solution: Found missing import lines in the analytics setup and enabled debug mode before Analytics initializes.
 
-3. **Merge Conflicts in GitHub:**  Multiple team members editing the same files caused conflicts when merging branches.
+3. **Gemini API Not Responding:**  The app consistently threw error 400, 429, 404 despite having a valid API key, completely blocking AI scenario generation.
    
-Solution: Resolved conflicts file by file in VSCode, keeping the loan system code while accepting the frontend team's UI changes.
+Solution: After debugging, we discovered two simultaneous issues. First, we switched to Gemini 3 Flash Preview model instead of the other models as the previously used models didnt worked. Second, the error 429 consistently pops up due to our quota has been exceeded numerous times during our testing phase. We solved it by creating a new API key. 
 
 ### Future Roadmap
 1. **Short-term**
@@ -69,13 +69,11 @@ Solution: Resolved conflicts file by file in VSCode, keeping the loan system cod
 ### Prerequisites
 - Node.js v18 or higher
 - A Google Gemini API key from [aistudio.google.com](https://aistudio.google.com)
-- A Firebase project with Analytics and Hosting enabled
 
 ### Installation
 
 1. Clone the repository
 git clone https://github.com/mttmrdck/KaisPagi.git
-cd KaisPagi
 
 2. Install dependencies
 npm install
@@ -89,6 +87,9 @@ firebase login
 5. Create a `.env` file in the root folder
 GEMINI_API_KEY=your_gemini_api_key_here
 
-6. Run the development server
+6. Run the development server (locally)
 npm run dev
 
+NOTE: This project uses a shared Firebase configuration for Analytics tracking. You do not need to set up your own Firebase project. 
+All analytics data from your session will be collected into our Firebase dashboard for research and impact measurement purposes. 
+The only key you need is your own Gemini API key for AI scenario generation. We used Gemini 3 Flash Preview as our AI model.
